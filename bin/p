@@ -1,0 +1,86 @@
+#!/bin/bash
+
+set -e
+
+# usage: sourceinfo repo branch directory name
+function sourceinfo() {
+    if [[ -z $4 ]]; then
+        echo 'You must specify a specfilename(package name)!'
+        exit 1
+    fi
+
+    local specfile=$3/$4
+
+    printf 'license:\n  - %s\n' "$(rpmspec -q --rpms --qf '%{license}\n' $specfile | sort | uniq | sed -r ':a;N;$!ba;s/\n/ and /g')"
+    printf "upstream:\n  src: $1\n  branch: $2\norigin:\n"
+    printf "  src: %s\n" "$(rpmspec -q --rpms --qf '%{url}\n' $specfile | sort | uniq)"
+}
+
+# usage: oldest filepath
+# show oldest file in the repo
+function oldest() {
+    git show $(git log --format="%h" --diff-filter=A -- "$1"):"$1"
+}
+
+# usage: init repo branch directory
+function init() {
+    if [ -d $3 ]; then
+        echo "$3 is already initialized, skipping..."
+        return
+    fi
+
+    while [ ! -d $3 ]; do
+        git clone -b $2 $1 $3
+    done
+}
+
+function info() {
+    sourceinfo https://gitee.com/src-anolis-os/$(basename $PWD).git a8.9 upstream $(basename $PWD).spec
+}
+
+function clone() {
+    cd $HOME
+    init git@192.168.10.152:cyos-security/public/$1.git master $1
+    cd $1
+    git switch -c dev
+
+    init https://gitee.com/src-anolis-os/$1.git a8.9 upstream
+    git check-ignore --no-index -q upstream || echo upstream >> .gitignore
+
+    info > SOURCEINFO.yaml
+
+    cp upstream/*.patch SOURCES/
+}
+
+function diff() {
+    nvim -d SPECS/$(basename $PWD).spec upstream/$(basename $PWD).spec
+}
+
+function build() {
+    # git root
+    rm -rf BUILD/ RPMS/ SRPMS/
+    sudo dnf builddep -y SPECS/$(basename $PWD).spec
+    rpmbuild -D "_topdir $PWD" -bb SPECS/$(basename $PWD).spec
+    rm -rf BUILD/
+    rpmbuild -D "_topdir $PWD" -bp SPECS/$(basename $PWD).spec
+}
+
+function install() {
+    sudo dnf install -y $@
+}
+
+function remove() {
+    local package_names=$(for rpm_file in $@; do rpm -qp --queryformat "%{NAME}\n" "$rpm_file"; done)
+    sudo dnf remove -y $package_names
+}
+
+function commit() {
+    git add -A
+    git commit -t $HOME/.tools/commit_templates/package_update_message
+}
+
+function push() {
+    git push origin dev -f
+}
+
+$1 ${@:2}

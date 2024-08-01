@@ -1,0 +1,14 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+
+- clean: ['~', '~/.config']
+
+- link:
+    ~/.dotfiles_local: ''
+    ~/.config/nvim/lua/local-settings: nvim/lua/local-settings
+
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
