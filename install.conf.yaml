@@ -9,6 +9,7 @@
 - link:
     ~/.dotfiles_local: ''
     ~/.config/nvim/lua/local-settings: nvim/lua/local-settings
+    ~/.config/fish/config_local_after.fish:
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]

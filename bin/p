@@ -76,7 +76,7 @@ function remove() {
 
 function commit() {
     git add -A
-    git commit -t $HOME/.tools/commit_templates/package_update_message
+    git commit -t $HOME/.dotfiles_local/commit_templates/package_update_message
 }
 
 function push() {
