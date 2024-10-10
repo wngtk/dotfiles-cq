@@ -8,7 +8,7 @@
 
 - link:
     ~/.dotfiles_local: ''
-    ~/.config/nvim/lua/local-settings: nvim/lua/local-settings
+    ~/.config/nvim/lua/local: nvim/lua/local
     ~/.config/fish/config_local_after.fish:
 
 - shell:
