@@ -50,7 +50,8 @@ Plug 'kshenoy/vim-signature'          " Show marks in the gutter
 Plug 'airblade/vim-gitgutter'         " Git gutter. I only use it for signcolumn
 
 " Colorschemes
-Plug 'sainnhe/sonokai'                 " Monokai Pro-like scheme
+" Plug 'sainnhe/sonokai'                 " Monokai Pro-like scheme
+Plug 'patstockwell/vim-monokai-tasty'
 
 call plug#end()
 
@@ -66,7 +67,10 @@ if exists("+termguicolors")
     " This is only necessary if you use "set termguicolors".
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-    silent! colorscheme sonokai
+
+    let g:vim_monokai_tasty_italic = 1
+    colorscheme vim-monokai-tasty
+    " silent! colorscheme sonokai
 endif
 
 " Spaces & Tabs
