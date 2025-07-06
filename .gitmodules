@@ -1,0 +1,6 @@
+[submodule "bash/oh-my-bash"]
+	path = bash/oh-my-bash
+	url = https://github.com/ohmybash/oh-my-bash.git
+[submodule "dotbot/dotbot"]
+	path = dotbot/dotbot
+	url = https://github.com/anishathalye/dotbot
