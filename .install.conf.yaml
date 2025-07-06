@@ -9,6 +9,7 @@
     ~/.dotfiles_cq: ''
     ~/.bashrc:
     ~/.bash:
+    ~/.bash_profile:
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
