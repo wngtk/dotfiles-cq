@@ -2,12 +2,13 @@
     link:
       create: true
       relink: true
-      force: true
 
 - clean: ['~', '~/.config']
 
 - link:
     ~/.dotfiles_cq: ''
+    ~/.bashrc:
+    ~/.bash:
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
