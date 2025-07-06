@@ -7,9 +7,7 @@
 - clean: ['~', '~/.config']
 
 - link:
-    ~/.dotfiles_local: ''
-    ~/.config/nvim/lua/local: nvim/lua/local
-    ~/.config/fish/config_local_after.fish:
+    ~/.dotfiles_cq: ''
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
